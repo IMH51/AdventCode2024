@@ -1,35 +1,41 @@
-const mulRegex = new RegExp(/mul\(\d{1,3},\d{1,3}\)/g)
-const conditionalRegex = new RegExp(/mul\(\d{1,3},\d{1,3}\)|do\(\)|don\'t\(\)/g)
-const numRegex = new RegExp(/\d{1,3}/g)
-const doRegex = new RegExp(/do\(\)/g)
-const dontRegex = new RegExp(/don\'t\(\)/g)
+const mulRegExp = /mul\(\d{1,3},\d{1,3}\)/g
+const conditionalRegExp = /mul\(\d{1,3},\d{1,3}\)|do\(\)|don\'t\(\)/g
+const numRegExp = /\d{1,3}/g
+const doRegExp = /do\(\)/g
+const dontRegExp = /don\'t\(\)/g
 
 const getNextTotal = (currentTotal: number, matchString: string): number => {
-  const numberMatches = matchString.match(numRegex)
-  const result = numberMatches?.reduce((total, num) => total * Number(num), 1) || 0
-  return currentTotal + result
+  const numberMatches = matchString.match(numRegExp)
+
+  const result = numberMatches?.reduce((total, num) => total * Number(num), 1)
+
+  return currentTotal + (result || 0)
 }
 
 export const sumValidMultiples = (input: string): number => {
-  const inputMatches = input.match(mulRegex)
+  const inputMatches = input.match(mulRegExp)
+
   return inputMatches?.reduce(getNextTotal, 0) || 0
 }
 
 export const sumValidMultiplesWithConditions = (input: string): number => {
-  const conditionalMatches = input.match(conditionalRegex)
+  const conditionalMatches = input.match(conditionalRegExp)
+  if (!conditionalMatches) return 0
+
   let multiply = true
-  return conditionalMatches?.reduce((acc, matchString) => {
-    if (doRegex.test(matchString)) { 
+
+  return conditionalMatches?.reduce((total, matchString) => {
+    if (doRegExp.test(matchString)) { 
       multiply = true
-      return acc
+      return total
     }
-    if (dontRegex.test(matchString)) {
+    if (dontRegExp.test(matchString)) {
       multiply = false
-      return acc
+      return total
     }
-    if (multiply) {
-      return getNextTotal(acc, matchString)
-    }
-    return acc
-  }, 0) || 0
+
+    if (multiply) return getNextTotal(total, matchString)
+
+    return total
+  }, 0)
 }

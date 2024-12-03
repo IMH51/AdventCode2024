@@ -1,29 +1,31 @@
-const isSafeStep = (step: number, previousStep: number): boolean => Math.abs(step - previousStep) <= 3
+const isSafeStep = (previousStep: number, step: number): boolean => Math.abs(step - previousStep) <= 3
 
-const isSafeLevel = (level: number[]): boolean => {
-  const descArray = level.every((step, index) => 
-    index > 0 ? step < level[index - 1] && isSafeStep(step, level[index - 1]) : true
-  )
-  const ascArray = level.every((step, index) => 
-    index > 0 ? step > level[index - 1] && isSafeStep(step, level[index - 1]) : true
-  )
-  return descArray || ascArray
-}
+const isDirectionSafe = (level: number[], direction: 'asc' | 'desc'): boolean => 
+  level.every((step, index) => {
+    if (!index) return true
 
-export const calculateSafeLevels = (levelsArray: number[][]): number => {
-  return levelsArray.reduce((acc, level) => {
-    return isSafeLevel(level) ? acc + 1 : acc
-  }, 0)
-}
+    const previousStep = level[index - 1]
+    const isSameDirection = direction === 'asc' ? step > previousStep : step < previousStep
 
-export const calculateProblemDampenerSafeLevels = (levelsArray: number[][]): number => {
-  return levelsArray.reduce((acc, level) => {
+    return isSameDirection && isSafeStep(previousStep, step)
+  })
+
+const isSafeLevel = (level: number[]): boolean => 
+  isDirectionSafe(level, 'asc') || isDirectionSafe(level, 'desc')
+
+export const calculateSafeLevels = (levelsArray: number[][]): number => 
+  levelsArray.reduce((acc, level) => isSafeLevel(level) ? acc + 1 : acc, 0)
+
+export const calculateProblemDampenerSafeLevels = (levelsArray: number[][]): number => 
+  levelsArray.reduce((acc, level) => {
     const alteredLevels = level.map((_, index) => {
       const newArray = [...level]
       newArray.splice(index, 1)
+
       return newArray
     })
-    const safeLevel = alteredLevels.some(isSafeLevel)
-    return safeLevel ? acc + 1 : acc
+    
+    const isDampenerSafeLevel = alteredLevels.some(isSafeLevel)
+
+    return isDampenerSafeLevel ? acc + 1 : acc
   }, 0)
-}

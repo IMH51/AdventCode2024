@@ -85,7 +85,7 @@ const generateArrays = (rawInput: string) => {
 
   rawInput.split(',').forEach((item, index) => {
     const arrayToFill = index % 2 === 0 ? leftInput : rightInput
-    arrayToFill.push(parseInt(item))
+    arrayToFill.push(Number(item))
   })
 
   return [ leftInput, rightInput ]

@@ -1010,9 +1010,15 @@ const day2RawInput = `
   60 63 66 68 71 74 76 79
 `
 
-const generateArrays = (input: string) => 
-  input.trim().split('\n').filter(Boolean)
-  .map(row => row.trim().split(' ').filter(Boolean).map(Number))
+const newLineRegExp = /\n/g
+const spaceRegExp = /\s+/g
+
+const splitStringByValue = (input: string, value: string | RegExp) => input.trim().split(value).filter(Boolean)
+
+const generateArrays = (input: string) => {
+  const inputRows = splitStringByValue(input, newLineRegExp)
+  return inputRows.map(row => splitStringByValue(row, spaceRegExp).map(Number))
+}
 
 export const exampleLevelsArray = generateArrays(day2ExampleInput)
 export const levelsArray = generateArrays(day2RawInput)
