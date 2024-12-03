@@ -1,4 +1,13 @@
-const rawInput = `
+const day2ExampleInput = `
+  7 6 4 2 1
+  1 2 7 8 9
+  9 7 6 2 1
+  1 3 2 4 5
+  8 6 4 4 1
+  1 3 6 7 9
+`
+
+const day2RawInput = `
   45 47 48 51 54 56 54
   76 79 81 84 84
   30 32 35 36 38 40 44
@@ -1005,4 +1014,5 @@ const generateArrays = (input: string) =>
   input.trim().split('\n').filter(Boolean)
   .map(row => row.trim().split(' ').filter(Boolean).map(Number))
 
-export const levelsArray = generateArrays(rawInput)
+export const exampleLevelsArray = generateArrays(day2ExampleInput)
+export const levelsArray = generateArrays(day2RawInput)

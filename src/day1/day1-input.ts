@@ -1,3 +1,5 @@
+const day1ExampleInput =  `3, 4, 4, 3, 2, 5, 1, 3, 3, 9, 3, 3`
+
 const day1RawInput = `40094, 37480,52117, 14510,92290, 82570,41563, 59882,56597, 98604,60657, 66508,85570, 59882,56065, 27818,78474, 72704,71099, 14510,34302, 92950,11680, 
 14510,17162, 66508,85767, 69912,43222, 99057,84192, 42459,86349, 47916,15974, 93804,62582, 84872,46480, 96423,49083, 47125,26321, 82391,29705, 99057,76669, 53445,97344, 
 23937,22364, 82947,43057, 41784,89096, 14096,54594, 74691,16496, 21289,16315, 26820,12070, 39776,92869, 76329,51048, 82455,39150, 94320,58187, 83731,68901, 59853,73788, 
@@ -86,9 +88,10 @@ const generateArrays = (rawInput: string) => {
     arrayToFill.push(parseInt(item))
   })
 
-  return { leftInput, rightInput }
+  return [ leftInput, rightInput ]
 }
 
-const { leftInput, rightInput } = generateArrays(day1RawInput)
+const [leftExampleInput, rightExampleInput] = generateArrays(day1ExampleInput)
+const [leftRawInput, rightRawInput] = generateArrays(day1RawInput)
 
-export { leftInput, rightInput }
+export { leftExampleInput, rightExampleInput, leftRawInput, rightRawInput }
