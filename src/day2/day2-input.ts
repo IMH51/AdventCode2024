@@ -1,3 +1,5 @@
+import { splitStringByValue } from "../helpers/splitStringByValue"
+
 const day2ExampleInput = `
   7 6 4 2 1
   1 2 7 8 9
@@ -1012,8 +1014,6 @@ const day2RawInput = `
 
 const newLineRegExp = /\n/g
 const spaceRegExp = /\s+/g
-
-const splitStringByValue = (input: string, value: string | RegExp) => input.trim().split(value).filter(Boolean)
 
 const generateArrays = (input: string) => {
   const inputRows = splitStringByValue(input, newLineRegExp)
