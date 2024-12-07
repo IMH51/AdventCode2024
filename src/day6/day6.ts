@@ -1,59 +1,43 @@
 const guard = "^"
 const wall = "#"
-const visitied = "X"
-const cell = "."
+const visited = "X"
 
 const directionModifiers = [[0, -1], [1, 0], [0, 1], [-1, 0]]
 
 const getStartCoordinates = (input: string[][]): [number, number] => {
-  const guardRow = input.find(row => row.includes(guard))
-  const y = input.indexOf(guardRow)
-  const x = guardRow.indexOf(guard)
+  const y = input.findIndex(row => row.includes(guard))
+  const x = input[y].indexOf(guard)
   return [x, y]
 }
 
-const getNextCell = (input: string[][], x: number, y: number, directionIndex: number): string => {
-  const [xModifier, yModifier] = directionModifiers[directionIndex]
-  const xCoord = x + xModifier
-  const yCoord = y + yModifier
-  return input[yCoord]?.[xCoord]
-}
-
-const getNextDirectionIndex = (input: string[][], x:  number, y: number, currentIndex: number): number => {
-  const nextIndex = currentIndex === 3 ? 0 : currentIndex + 1
-  const nextCell = getNextCell(input, x, y, nextIndex)
-
-  if (nextCell === wall) {
-    return getNextDirectionIndex(input, x, y, nextIndex)
-  }
-
-  return nextIndex
-}
-
 const simulateGuardSteps = (input: string[][], x: number, y: number, currentCount = 0, directionIndex = 0): number => {
-  const nextCell = getNextCell(input, x, y, directionIndex)
+  const currentCell = input[y]?.[x]
 
-  if (!nextCell) return currentCount
- 
-  if (nextCell === wall) {
-    const nextDirectionIndex = getNextDirectionIndex(input, x, y, directionIndex)
-    return simulateGuardSteps(input, x, y, currentCount, nextDirectionIndex)
+  if (!currentCell) {
+    return currentCount
   }
 
-  const [xModifier, yModifier] = directionModifiers[directionIndex]
+  const [xMod, yMod] = directionModifiers[directionIndex]
+ 
+  if (currentCell === wall) {
+    const nextDirectionIndex = directionIndex === 3 ? 0 : directionIndex + 1
+    return simulateGuardSteps(input, x - xMod, y - yMod, currentCount, nextDirectionIndex)
+  }
 
-  if (nextCell === cell) {
-    input[y + yModifier][x + xModifier] = visitied
+  if (currentCell !== guard && currentCell !== visited) {
     currentCount++
   }
 
-  return simulateGuardSteps(input, x + xModifier, y + yModifier, currentCount, directionIndex)
+  if (currentCell !== visited) {
+    input[y][x] = visited
+  }
+
+  return simulateGuardSteps(input, x + xMod, y + yMod, currentCount, directionIndex)
 }
 
 
 export const getTotalGuardSteps = (input: string[][]): number => {
   let [startX, startY] = getStartCoordinates(input)
-  input[startY][startX] = visitied
   const totalSteps = simulateGuardSteps(input, startX, startY, 1)
   return totalSteps
 }

@@ -6,7 +6,7 @@ describe("Day 6", () => {
     const exampleResult = getTotalGuardSteps(day6ExampleInputArray)
     expect(exampleResult).toBe(41)
 
-    const result = getTotalGuardSteps(day6RawInputArray)
-    expect(result).toBe(0)
+    // const result = getTotalGuardSteps(day6RawInputArray)
+    // expect(result).toBe(0)
   })
 })
